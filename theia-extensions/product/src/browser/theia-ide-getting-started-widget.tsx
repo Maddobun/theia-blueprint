@@ -11,11 +11,13 @@ import * as React from 'react';
 
 import { Message, PreferenceService } from '@theia/core/lib/browser';
 import { inject, injectable } from '@theia/core/shared/inversify';
-import { renderDocumentation, renderDownloads, renderExtendingCustomizing, renderSourceCode, renderSupport, renderTickets, renderWhatIs } from './branding-util';
+import { FileDialogService } from "@theia/filesystem/lib/browser";
+import { FileService } from "@theia/filesystem/lib/browser/file-service";
 
 import { GettingStartedWidget } from '@theia/getting-started/lib/browser/getting-started-widget';
 import { VSXEnvironment } from '@theia/vsx-registry/lib/common/vsx-environment';
 import { WindowService } from '@theia/core/lib/browser/window/window-service';
+import { InterviewView } from './interview_question';
 
 @injectable()
 export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
@@ -28,6 +30,10 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
 
     @inject(PreferenceService)
     protected readonly preferenceService: PreferenceService;
+    @inject(FileDialogService)
+	protected readonly fileDialogService: FileDialogService;
+	@inject(FileService)
+	protected readonly fileService: FileService;
 
     protected vscodeApiVersion: string;
 
@@ -47,98 +53,11 @@ export class TheiaIDEGettingStartedWidget extends GettingStartedWidget {
     }
 
     protected render(): React.ReactNode {
-        return <div className='gs-container'>
-            <div className='gs-content-container'>
-                <div className='gs-float'>
-                    <div className='gs-logo'>
-                    </div>
-                    {this.renderActions()}
-                </div>
-                {this.renderHeader()}
-                <hr className='gs-hr' />
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderWhatIs(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderExtendingCustomizing(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderSupport(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderTickets(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderSourceCode(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderDocumentation(this.windowService)}
-                    </div>
-                </div>
-                <div className='flex-grid'>
-                    <div className='col'>
-                        {renderDownloads()}
-                    </div>
-                </div>
-            </div>
-            <div className='gs-preference-container'>
-                {this.renderPreferences()}
-            </div>
-        </div>;
-    }
-
-    protected renderActions(): React.ReactNode {
-        return <div className='gs-container'>
-            <div className='flex-grid'>
-                <div className='col'>
-                    {this.renderOpen()}
-                </div>
-            </div>
-            <div className='flex-grid'>
-                <div className='col'>
-                    {this.renderRecentWorkspaces()}
-                </div>
-            </div>
-            <div className='flex-grid'>
-                <div className='col'>
-                    {this.renderSettings()}
-                </div>
-            </div>
-            <div className='flex-grid'>
-                <div className='col'>
-                    {this.renderHelp()}
-                </div>
-            </div>
-        </div>;
-    }
-
-    protected renderHeader(): React.ReactNode {
-        return <div className='gs-header'>
-            <h1>Eclipse Theia <span className='gs-blue-header'>IDE</span></h1>
-            {this.renderVersion()}
-        </div>;
-    }
-
-    protected renderVersion(): React.ReactNode {
-        return <div>
-            <p className='gs-sub-header' >
-                {this.applicationInfo ? 'Version ' + this.applicationInfo.version : '-'}
-            </p>
-
-            <p className='gs-sub-header' >
-                {'VS Code API Version: ' + this.vscodeApiVersion}
-            </p>
-        </div>;
+        return (
+			<InterviewView
+				fileDialogService={this.fileDialogService}
+				fileService={this.fileService}
+			/>
+		);
     }
 }
