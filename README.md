@@ -1,9 +1,3 @@
-
-
-### Interview question
-
-The question can be found inside of `theia-extensions/product/src/browser/interview_question.tsx`. All tasks specified inside can be done by modifying this file only. However, reading code and definitions outside of this file will likely be needed to complete the task.
-
 ### Build Requirements
 
 Please check Theia's [prerequisites](https://github.com/eclipse-theia/theia/blob/master/doc/Developing.md#prerequisites), and keep node versions aligned between Theia IDE and that of the referenced Theia version.
